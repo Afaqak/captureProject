@@ -5,10 +5,22 @@ import money from '../img/money.svg';
 import teamwork from '../img/teamwork.svg';
 import home2 from '../img/home2.png';
 import styled from 'styled-components';
+import { useInView } from 'react-intersection-observer';
 import { About, Description, Image} from "../components/styles";
+import { useAnimation } from 'framer-motion';
+import { fade } from '../animation';
+
 const AboutServices = () => {
+    const controls = useAnimation();
+    const [element, view] = useInView({ threshold: 0.3 });
+    if (view) {
+        controls.start("show");
+    }
+    else {
+        controls.start("hidden");
+    }
   return (
-    <Services>
+    <Services animate={controls} variants={fade} ref={element}>
         <Description>
             <h2>High <span>quality</span> services.</h2>
             <Cards className="cards">
@@ -65,6 +77,12 @@ const Cards=styled.div`
 display:  grid;
 grid-template-columns: repeat(2, 1fr);
 grid-gap: 2rem;
+@media (max-width: 1300px){
+    grid-template-columns: 1fr;
+    align-items: center;
+    justify-items: center;
+    width: 100%;
+}
 `;
 const Card=styled.div`
 flex-basis: 20rem;
